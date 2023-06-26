@@ -25,7 +25,7 @@ contract Faucet {
   }
 
   modifier onlyOwner() {
-    require(msg.sender == owner);
+    require(msg.sender == owner,"Not Owner");
     _;
   }
 }
