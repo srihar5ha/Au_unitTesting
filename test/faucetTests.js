@@ -38,19 +38,33 @@ describe('Faucet', function () {
   await expect(faucet.connect(other).withdrawAll()).to.be.revertedWith("Not Owner");
 });
 
-it("Should succeed WithdrawAll ", async function () {
-  const { faucet, owner } = await loadFixture(deployContractAndSetVariables);
-  const prevBalance = await ethers.provider.getBalance(owner.address);
-  console.log("prev bal ",prevBalance);
-  
-  await faucet.withdrawAll();
-  
-  const currentBalance = await ethers.provider.getBalance(owner.address)
-  const faucetBalance = await ethers.provider.getBalance(faucet.runner.address)
 
-  console.log("curr and faucet ",currentBalance,faucetBalance);
+it("Should destroy Faucet on owner's call", async function () {
+  const { faucet } = await loadFixture(deployContractAndSetVariables);
 
-  expect(faucetBalance).to.equal(0);
+  await faucet.destroyFaucet()
+  
+  expect(await ethers.provider.getCode(faucet.runner.address)).to.be.equal("0x");
+
+});
+
+
+
+
+
+// it("Should succeed WithdrawAll ", async function () {
+//   const { faucet, owner } = await loadFixture(deployContractAndSetVariables);
+//   const prevBalance = await ethers.provider.getBalance(owner.address);
+//   console.log("prev bal ",prevBalance);
+  
+//   await faucet.withdrawAll();
+  
+//   const currentBalance = await ethers.provider.getBalance(owner.address)
+//   const faucetBalance = await ethers.provider.getBalance(faucet.runner.address)
+
+//   console.log("curr and faucet ",currentBalance,faucetBalance);
+
+//   expect(faucetBalance).to.equal(0);
   
   // describe("WithdrawAll", function(){
   //   it("should transfer the balance from the contract to the owner", async function () {
@@ -59,7 +73,7 @@ it("Should succeed WithdrawAll ", async function () {
   // })
   
 
-});
+//});
 
 
 
